@@ -84,19 +84,15 @@
       <pose>0 0 0.415 0 0 0</pose>
       <sensor name="force_torque" type="force_torque">
           <update_rate>30</update_rate>
+          <frame>child</frame>
+          <measure_direction>child_to_parent</measure_direction>
       </sensor>
     </joint>
 
     <!-- Force-Torque Plugin (moved to model level) -->
     <plugin filename="gz-sim-forcetorque-system"
             name="gz::sim::systems::ForceTorque">
-      <child_link_name>sensor_cap_link</child_link_name>
-      <parent_link_name>stick_link</parent_link_name>
-      <name>stick_force_torque</name>
-      <topic>/stick/force_torque</topic>
-      <frame>child</frame>
       <always_on>1</always_on>
-      <measure_direction>parent_to_child</measure_direction>
     </plugin>
 
   </model>

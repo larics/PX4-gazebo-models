@@ -10,7 +10,7 @@
     </include>
     <include merge='true'>
       <uri>model://stick</uri>
-      <pose>.12 .0 .22 0 1.57 0</pose>
+      <pose>.05 .0 .22 0 1.57 0</pose>
     </include>
     <joint name="CameraJoint" type="fixed">
       <parent>base_link</parent>
@@ -20,7 +20,7 @@
     <joint name="StickJoint" type="fixed">
       <parent>base_link</parent>
       <child>stick_link</child>
-      <pose relative_to="base_link">.12 .01 .22 0 0 0</pose>
+      <pose relative_to="base_link">.05 .01 .22 0 0 0</pose>
     </joint>
   </model>
 </sdf>

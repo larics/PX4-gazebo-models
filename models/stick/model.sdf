@@ -1,41 +1,103 @@
 <?xml version="1.0" ?>
-<sdf version="1.6">
+<sdf version="1.7">
   <model name="stick">
     <static>false</static>
 
+    <!-- Main stick shaft -->
     <link name="stick_link">
+      <pose>0 0 0 0 0 0</pose>
       <inertial>
-        <mass>0.05</mass>
+        <mass>0.04</mass>
         <inertia>
-          <!-- Inertia for a solid cylinder aligned with Z-axis -->
-          <!-- Ixx and Iyy = (1/12)*m*(3r^2 + h^2), Izz = 0.5*m*r^2 -->
-          <ixx>0.000226</ixx>
-          <iyy>0.000226</iyy>
-          <izz>0.000000625</izz>
+          <ixx>0.0002</ixx>
+          <iyy>0.0002</iyy>
+          <izz>0.0000005</izz>
         </inertia>
       </inertial>
 
-      <visual name="stick_visual">
-        <geometry>
-          <cylinder>
-            <radius>0.005</radius>  <!-- 1 cm diameter -->
-            <length>0.4</length>    <!-- 40 cm -->
-          </cylinder>
-        </geometry>
-        <material>
-          <ambient>0.5 0.5 0.5 1</ambient>
-          <diffuse>0.5 0.5 0.5 1</diffuse> <!-- Gray color -->
-        </material>
-      </visual>
-
-      <collision name="stick_collision">
+      <visual name="main_stick_visual">
         <geometry>
           <cylinder>
             <radius>0.005</radius>
             <length>0.4</length>
           </cylinder>
         </geometry>
+        <pose>0 0 0.2 0 0 0</pose>
+        <material>
+          <ambient>0.5 0.5 0.5 1</ambient>
+          <diffuse>0.5 0.5 0.5 1</diffuse>
+        </material>
+      </visual>
+
+      <collision name="main_stick_collision">
+        <geometry>
+          <cylinder>
+            <radius>0.005</radius>
+            <length>0.4</length>
+          </cylinder>
+        </geometry>
+        <pose>0 0 0.2 0 0 0</pose>
       </collision>
     </link>
+
+    <!-- Cap at the tip -->
+    <link name="sensor_cap_link">
+      <pose>0 0 0.415 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.00001</ixx>
+          <iyy>0.00001</iyy>
+          <izz>0.0000001</izz>
+        </inertia>
+      </inertial>
+
+      <visual name="sensor_cap_visual">
+        <geometry>
+          <cylinder>
+            <radius>0.01</radius>
+            <length>0.03</length>
+          </cylinder>
+        </geometry>
+        <pose>0 0 0 0 0 0</pose>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.3 0.3 0.3 1</diffuse>
+        </material>
+      </visual>
+
+      <collision name="sensor_cap_collision">
+        <geometry>
+          <cylinder>
+            <radius>0.01</radius>
+            <length>0.03</length>
+          </cylinder>
+        </geometry>
+        <pose>0 0 0 0 0 0</pose>
+      </collision>
+    </link>
+
+    <!-- Fixed joint between shaft and sensor cap -->
+    <joint name="cap_fixed_joint" type="fixed">
+      <parent>stick_link</parent>
+      <child>sensor_cap_link</child>
+      <pose>0 0 0.415 0 0 0</pose>
+      <sensor name="force_torque" type="force_torque">
+          <update_rate>30</update_rate>
+      </sensor>
+    </joint>
+
+    <!-- Force-Torque Plugin (moved to model level) -->
+    <plugin filename="gz-sim-forcetorque-system"
+            name="gz::sim::systems::ForceTorque">
+      <child_link_name>sensor_cap_link</child_link_name>
+      <parent_link_name>stick_link</parent_link_name>
+      <name>stick_force_torque</name>
+      <topic>/stick/force_torque</topic>
+      <frame>child</frame>
+      <always_on>1</always_on>
+      <measure_direction>parent_to_child</measure_direction>
+    </plugin>
+
   </model>
 </sdf>

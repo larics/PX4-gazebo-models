@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="stick">
+    <static>false</static>
+
+    <link name="stick_link">
+      <inertial>
+        <mass>0.05</mass>
+        <inertia>
+          <!-- Inertia for a solid cylinder aligned with Z-axis -->
+          <!-- Ixx and Iyy = (1/12)*m*(3r^2 + h^2), Izz = 0.5*m*r^2 -->
+          <ixx>0.000226</ixx>
+          <iyy>0.000226</iyy>
+          <izz>0.000000625</izz>
+        </inertia>
+      </inertial>
+
+      <visual name="stick_visual">
+        <geometry>
+          <cylinder>
+            <radius>0.005</radius>  <!-- 1 cm diameter -->
+            <length>0.4</length>    <!-- 40 cm -->
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0.5 0.5 0.5 1</ambient>
+          <diffuse>0.5 0.5 0.5 1</diffuse> <!-- Gray color -->
+        </material>
+      </visual>
+
+      <collision name="stick_collision">
+        <geometry>
+          <cylinder>
+            <radius>0.005</radius>
+            <length>0.4</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
